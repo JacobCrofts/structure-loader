@@ -1,11 +1,13 @@
 package me.jacobcrofts.simplestructureloader.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class Selection {
 	
@@ -32,8 +34,8 @@ public class Selection {
 		this.right = location;
 	}
 	
-	public Map<Location, Block> getLocationsAndBlocks() {
-		Map<Location, Block> blockData = new HashMap<Location, Block>();
+	public List<Block> getBlocks() {
+		List<Block> blockData = new ArrayList<Block>();
 		
 		int xMin = Math.min(left.getBlockX(), right.getBlockX());
 		int xMax = Math.max(left.getBlockX(), right.getBlockX());
@@ -48,12 +50,31 @@ public class Selection {
 			for (int y = yMin; y <= yMax; y++) {
 				for (int z = zMin; z <= zMax; z++) {
 					Location l = new Location(world, x, y, z);
-					blockData.put(l, l.getBlock());
+					blockData.add(l.getBlock());
 				}
 			}
 		}
 		
 		return blockData;
+	}
+	
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	public JSONArray toJSON() {
+		JSONArray blockDataArray = new JSONArray();
+		
+		List<Block> blocks = this.getBlocks();
+		
+		for (Block block : blocks) {
+			JSONObject blockJSON = new JSONObject();
+			blockJSON.put("x", block.getLocation().getBlockX());
+			blockJSON.put("y", block.getLocation().getBlockY());
+			blockJSON.put("z", block.getLocation().getBlockZ());
+			blockJSON.put("type", block.getType().toString());
+			blockJSON.put("data", block.getData());
+			blockDataArray.add(blockJSON);
+		}
+		
+		return blockDataArray;
 	}
 
 }
