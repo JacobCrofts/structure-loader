@@ -2,6 +2,7 @@ package me.jacobcrofts.simplestructureloader.commands;
 
 import java.io.IOException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,28 +27,35 @@ public class CmdSave implements CommandExecutor {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
 			
-			if (player.getGameMode() != GameMode.CREATIVE) {
+			if (args.length != 1) {
 				return false;
 			}
 			
+			if (player.getGameMode() != GameMode.CREATIVE) {
+				player.sendMessage(ChatColor.RED + "You must be in creative mode to execute this command.");
+				return true;
+			}
+			
 			if (!(player.isOp() || player.hasPermission("simple-structures.ALL"))) {
-				return false;
-				// TODO: custom error messages
+				player.sendMessage(ChatColor.RED + "You do not have permission to perform this command.");
+				return true;
 			}
 			
 			Selection selection = this.manager.getSelection(player);
 			selection.saveCurrentSelection();
+			
 			try {
 				StructureAPI.writeToFile(args[0], selection);
 			} catch (IOException e) {
 				e.printStackTrace();
-				return false;
+				player.sendMessage(ChatColor.RED + "Something went wrong whe we tried to write your structure to a file.");
 			}
 			
 			return true;
 			
 		}
 		
+		System.out.println("Command must be executed by a Player.");
 		return false;
 	}
 
