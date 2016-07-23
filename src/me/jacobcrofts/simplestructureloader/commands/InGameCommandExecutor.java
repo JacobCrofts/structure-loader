@@ -40,8 +40,10 @@ public abstract class InGameCommandExecutor implements CommandExecutor {
 		}
 		
 		CommandInputHandler inputHandler = (CommandInputHandler) method.getAnnotation(CommandInputHandler.class);
-		if (inputHandler.minArgs() > args.length || inputHandler.maxArgs() < args.length) {
-			return false;
+		if (inputHandler != null) {			
+			if (inputHandler.minArgs() > args.length || inputHandler.maxArgs() < args.length) {
+				return false;
+			}
 		}
 		
 		return true;

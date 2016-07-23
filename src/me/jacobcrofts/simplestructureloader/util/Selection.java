@@ -47,23 +47,27 @@ public class Selection {
 	public void saveCurrentSelection() {
 		List<SavedBlock> blocks = new ArrayList<SavedBlock>();
 		
-		int xMin = Math.min(leftClickLocation.getBlockX(), rightClickLocation.getBlockX());
-		int xMax = Math.max(leftClickLocation.getBlockX(), rightClickLocation.getBlockX());
-		int yMin = Math.min(leftClickLocation.getBlockY(), rightClickLocation.getBlockY());
-		int yMax = Math.max(leftClickLocation.getBlockY(), rightClickLocation.getBlockY());
-		int zMin = Math.min(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
-		int zMax = Math.max(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
-		
-		World world = leftClickLocation.getWorld();
-		Location baseBlock = new Location(world, xMin, yMin, zMin);
-		
-		for (int x = xMin; x <= xMax; x++) {
-			for (int y = yMin; y <= yMax; y++) {
-				for (int z = zMin; z <= zMax; z++) {
-					Location l = new Location(world, x, y, z);
-					blocks.add(new SavedBlock(baseBlock, l.getBlock()));
+		if (leftClickLocation != null && rightClickLocation != null) {
+			
+			int xMin = Math.min(leftClickLocation.getBlockX(), rightClickLocation.getBlockX());
+			int xMax = Math.max(leftClickLocation.getBlockX(), rightClickLocation.getBlockX());
+			int yMin = Math.min(leftClickLocation.getBlockY(), rightClickLocation.getBlockY());
+			int yMax = Math.max(leftClickLocation.getBlockY(), rightClickLocation.getBlockY());
+			int zMin = Math.min(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
+			int zMax = Math.max(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
+			
+			World world = leftClickLocation.getWorld();
+			Location baseBlock = new Location(world, xMin, yMin, zMin);
+			
+			for (int x = xMin; x <= xMax; x++) {
+				for (int y = yMin; y <= yMax; y++) {
+					for (int z = zMin; z <= zMax; z++) {
+						Location l = new Location(world, x, y, z);
+						blocks.add(new SavedBlock(baseBlock, l.getBlock()));
+					}
 				}
 			}
+			
 		}
 		
 		this.savedBlocks = blocks;

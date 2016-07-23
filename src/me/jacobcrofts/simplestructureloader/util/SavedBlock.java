@@ -24,7 +24,7 @@ public class SavedBlock {
 	}
 	
 	public SavedBlock(JSONObject savedBlockData) {
-		this.type = (Material) savedBlockData.get("type");
+		this.type = Material.getMaterial((String) savedBlockData.get("type"));
 		this.data = (byte) savedBlockData.get("data");
 		this.relativeX = (int) savedBlockData.get("relative-x");
 		this.relativeY = (int) savedBlockData.get("relative-y");
@@ -54,7 +54,7 @@ public class SavedBlock {
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON() {
 		JSONObject savedBlockData = new JSONObject();
-		savedBlockData.put("type", this.type);
+		savedBlockData.put("type", this.type.toString());
 		savedBlockData.put("data", this.data);
 		savedBlockData.put("relative-x", this.relativeX);
 		savedBlockData.put("relative-y", this.relativeY);

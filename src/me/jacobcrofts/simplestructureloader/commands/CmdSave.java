@@ -19,6 +19,7 @@ public class CmdSave extends InGameCommandExecutor {
 	}
 
 	@Override
+	@CommandInputHandler(minArgs = 1, maxArgs = 1)
 	public boolean onCommand(Player player, String[] args) {
 		
 		if (player.getGameMode() != GameMode.CREATIVE) {
