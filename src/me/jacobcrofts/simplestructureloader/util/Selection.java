@@ -1,6 +1,7 @@
 package me.jacobcrofts.simplestructureloader.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -16,6 +17,15 @@ public class Selection {
 	
 	public Selection() {
 		this.savedBlocks = new ArrayList<SavedBlock>();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Selection(JSONArray savedBlockData) {
+		this();
+		Iterator<JSONObject> iterator = savedBlockData.iterator();
+		while (iterator.hasNext()) {
+			this.savedBlocks.add(new SavedBlock(iterator.next()));
+		}
 	}
 	
 	public Location getLeftClickLocation() {
@@ -34,7 +44,7 @@ public class Selection {
 		this.rightClickLocation = location;
 	}
 	
-	public void save() {
+	public void saveCurrentSelection() {
 		List<SavedBlock> blocks = new ArrayList<SavedBlock>();
 		
 		int xMin = Math.min(leftClickLocation.getBlockX(), rightClickLocation.getBlockX());
@@ -72,10 +82,6 @@ public class Selection {
 		}
 		
 		return blockDataArray;
-	}
-	
-	public void saveFromJSON(JSONArray json) {
-		// TODO
 	}
 
 }

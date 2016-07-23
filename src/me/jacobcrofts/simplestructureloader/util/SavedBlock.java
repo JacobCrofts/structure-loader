@@ -23,6 +23,14 @@ public class SavedBlock {
 		this.relativeZ = relativeLocation.getBlockZ();
 	}
 	
+	public SavedBlock(JSONObject savedBlockData) {
+		this.type = (Material) savedBlockData.get("type");
+		this.data = (byte) savedBlockData.get("data");
+		this.relativeX = (int) savedBlockData.get("relative-x");
+		this.relativeY = (int) savedBlockData.get("relative-y");
+		this.relativeZ = (int) savedBlockData.get("relative-z");
+	}
+	
 	public Material getType() {
 		return this.type;
 	}
@@ -45,13 +53,13 @@ public class SavedBlock {
 	
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON() {
-		JSONObject json = new JSONObject();
-		json.put("type", this.type);
-		json.put("data", this.data);
-		json.put("relative-x", this.relativeX);
-		json.put("relative-y", this.relativeY);
-		json.put("relative-z", this.relativeZ);
-		return json;
+		JSONObject savedBlockData = new JSONObject();
+		savedBlockData.put("type", this.type);
+		savedBlockData.put("data", this.data);
+		savedBlockData.put("relative-x", this.relativeX);
+		savedBlockData.put("relative-y", this.relativeY);
+		savedBlockData.put("relative-z", this.relativeZ);
+		return savedBlockData;
 	}
 	
 }
