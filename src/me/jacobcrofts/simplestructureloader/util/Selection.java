@@ -5,75 +5,75 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class Selection {
 	
-	private Location left;
-	private Location right;
-	private List<Block> blocks;
+	private Location leftClickLocation;
+	private Location rightClickLocation;
+	private List<SavedBlock> savedBlocks;
 	
 	public Selection() {
-		this.blocks = new ArrayList<Block>();
+		this.savedBlocks = new ArrayList<SavedBlock>();
 	}
 	
 	public Location getLeftClickLocation() {
-		return this.left;
+		return this.leftClickLocation;
 	}
 	
 	public Location getRightClickLocation() {
-		return this.right;
+		return this.rightClickLocation;
 	}
 	
 	public void setLeftClickLocation(Location location) {
-		this.left = location;
+		this.leftClickLocation = location;
 	}
 	
 	public void setRightClickLocation(Location location) {
-		this.right = location;
+		this.rightClickLocation = location;
 	}
 	
 	public void save() {
-		List<Block> blocks = new ArrayList<Block>();
+		List<SavedBlock> blocks = new ArrayList<SavedBlock>();
 		
-		int xMin = Math.min(left.getBlockX(), right.getBlockX());
-		int xMax = Math.max(left.getBlockX(), right.getBlockX());
-		int yMin = Math.min(left.getBlockY(), right.getBlockY());
-		int yMax = Math.max(left.getBlockY(), right.getBlockY());
-		int zMin = Math.min(left.getBlockZ(), right.getBlockZ());
-		int zMax = Math.max(left.getBlockZ(), right.getBlockZ());
+		int xMin = Math.min(leftClickLocation.getBlockX(), rightClickLocation.getBlockX());
+		int xMax = Math.max(leftClickLocation.getBlockX(), rightClickLocation.getBlockX());
+		int yMin = Math.min(leftClickLocation.getBlockY(), rightClickLocation.getBlockY());
+		int yMax = Math.max(leftClickLocation.getBlockY(), rightClickLocation.getBlockY());
+		int zMin = Math.min(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
+		int zMax = Math.max(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
 		
-		World world = left.getWorld();
+		World world = leftClickLocation.getWorld();
+		Location baseBlock = new Location(world, xMin, yMin, zMin);
 		
 		for (int x = xMin; x <= xMax; x++) {
 			for (int y = yMin; y <= yMax; y++) {
 				for (int z = zMin; z <= zMax; z++) {
 					Location l = new Location(world, x, y, z);
-					blocks.add(l.getBlock());
+					blocks.add(new SavedBlock(baseBlock, l.getBlock()));
 				}
 			}
 		}
 		
-		this.blocks = blocks;
+		this.savedBlocks = blocks;
 	}
 	
-	public List<Block> getBlocks() {
-		return this.blocks;
+	public List<SavedBlock> getSavedBlocks() {
+		return this.savedBlocks;
 	}
 	
-	@SuppressWarnings({ "deprecation", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public JSONArray toJSON() {
 		JSONArray blockDataArray = new JSONArray();
 		
-		List<Block> blocks = this.getBlocks();
+		List<SavedBlock> blocks = this.getSavedBlocks();
 		
-		for (Block block : blocks) {
+		for (SavedBlock block : blocks) {
 			JSONObject blockJSON = new JSONObject();
-			blockJSON.put("x", block.getLocation().getBlockX());
-			blockJSON.put("y", block.getLocation().getBlockY());
-			blockJSON.put("z", block.getLocation().getBlockZ());
+			blockJSON.put("x", block.getRelativeX());
+			blockJSON.put("y", block.getRelativeY());
+			blockJSON.put("z", block.getRelativeZ());
 			blockJSON.put("type", block.getType().toString());
 			blockJSON.put("data", block.getData());
 			blockDataArray.add(blockJSON);
