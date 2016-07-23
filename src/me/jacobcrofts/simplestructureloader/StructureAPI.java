@@ -1,5 +1,6 @@
-package me.jacobcrofts.simplestructureloader.api;
+package me.jacobcrofts.simplestructureloader;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,17 +12,21 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import me.jacobcrofts.simplestructureloader.util.SavedBlock;
-import me.jacobcrofts.simplestructureloader.util.Selection;
-
 public final class StructureAPI {
 	
 	private StructureAPI() {}
 	
 	public static void writeToFile(String filename, Selection selection) throws IOException {
-		FileWriter writer = new FileWriter("structures/" + filename + ".json");
+		
+		File structures = new File("plugins/structures");
+		if (!(structures.exists())) {			
+			structures.mkdirs();
+		}
+		
+		FileWriter writer = new FileWriter("plugins/structures/" + filename + ".json");
 		writer.write(selection.toJSON().toJSONString());
 		writer.close();
+		
 	}
 	
 	public static JSONArray readFromFile(String path) throws FileNotFoundException, IOException, ParseException {

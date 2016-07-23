@@ -1,7 +1,0 @@
-name: SimpleStructureLoader
-main: me.jacobcrofts.simplestructureloader.SimpleStructureLoader
-version: 1.0
-commands:
-  save:
-    description: Save a structure
-    usage: /save
