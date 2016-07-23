@@ -10,8 +10,8 @@ import org.json.simple.JSONObject;
 
 public class Selection {
 	
-	private Location left;
-	private Location right;
+	private Location leftClickLocation;
+	private Location rightClickLocation;
 	private List<SavedBlock> savedBlocks;
 	
 	public Selection() {
@@ -19,38 +19,39 @@ public class Selection {
 	}
 	
 	public Location getLeftClickLocation() {
-		return this.left;
+		return this.leftClickLocation;
 	}
 	
 	public Location getRightClickLocation() {
-		return this.right;
+		return this.rightClickLocation;
 	}
 	
 	public void setLeftClickLocation(Location location) {
-		this.left = location;
+		this.leftClickLocation = location;
 	}
 	
 	public void setRightClickLocation(Location location) {
-		this.right = location;
+		this.rightClickLocation = location;
 	}
 	
 	public void save() {
 		List<SavedBlock> blocks = new ArrayList<SavedBlock>();
 		
-		int xMin = Math.min(left.getBlockX(), right.getBlockX());
-		int xMax = Math.max(left.getBlockX(), right.getBlockX());
-		int yMin = Math.min(left.getBlockY(), right.getBlockY());
-		int yMax = Math.max(left.getBlockY(), right.getBlockY());
-		int zMin = Math.min(left.getBlockZ(), right.getBlockZ());
-		int zMax = Math.max(left.getBlockZ(), right.getBlockZ());
+		int xMin = Math.min(leftClickLocation.getBlockX(), rightClickLocation.getBlockX());
+		int xMax = Math.max(leftClickLocation.getBlockX(), rightClickLocation.getBlockX());
+		int yMin = Math.min(leftClickLocation.getBlockY(), rightClickLocation.getBlockY());
+		int yMax = Math.max(leftClickLocation.getBlockY(), rightClickLocation.getBlockY());
+		int zMin = Math.min(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
+		int zMax = Math.max(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
 		
-		World world = left.getWorld();
+		World world = leftClickLocation.getWorld();
+		Location baseBlock = new Location(world, xMin, yMin, zMin);
 		
 		for (int x = xMin; x <= xMax; x++) {
 			for (int y = yMin; y <= yMax; y++) {
 				for (int z = zMin; z <= zMax; z++) {
 					Location l = new Location(world, x, y, z);
-					blocks.add(new SavedBlock(l.getBlock()));
+					blocks.add(new SavedBlock(baseBlock, l.getBlock()));
 				}
 			}
 		}

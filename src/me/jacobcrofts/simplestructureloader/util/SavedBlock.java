@@ -13,13 +13,13 @@ public class SavedBlock {
 	private final int relativeZ;
 	
 	@SuppressWarnings("deprecation")
-	public SavedBlock(Block block) {
+	public SavedBlock(Location baseLocation, Block block) {
 		this.type = block.getType();
 		this.data = block.getData();
 		Location location = block.getLocation();
-		this.relativeX = location.getBlockX();
-		this.relativeY = location.getBlockY();
-		this.relativeZ = location.getBlockZ();
+		this.relativeX = location.subtract(baseLocation).getBlockX();
+		this.relativeY = location.subtract(baseLocation).getBlockY();
+		this.relativeZ = location.subtract(baseLocation).getBlockZ();
 	}
 	
 	public Material getType() {
