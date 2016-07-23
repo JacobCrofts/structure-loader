@@ -67,22 +67,14 @@ public class Selection {
 	public JSONArray toJSON() {
 		JSONArray blockDataArray = new JSONArray();
 		
-		List<SavedBlock> blocks = this.getSavedBlocks();
-		
-		for (SavedBlock block : blocks) {
-			JSONObject blockJSON = new JSONObject();
-			blockJSON.put("x", block.getRelativeX());
-			blockJSON.put("y", block.getRelativeY());
-			blockJSON.put("z", block.getRelativeZ());
-			blockJSON.put("type", block.getType().toString());
-			blockJSON.put("data", block.getData());
-			blockDataArray.add(blockJSON);
+		for (SavedBlock block : this.savedBlocks) {
+			blockDataArray.add(block.toJSON());
 		}
 		
 		return blockDataArray;
 	}
 	
-	public void saveFromJSON(JSONObject json) {
+	public void saveFromJSON(JSONArray json) {
 		// TODO
 	}
 
