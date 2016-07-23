@@ -3,6 +3,7 @@ package me.jacobcrofts.simplestructureloader.util;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.json.simple.JSONObject;
 
 public class SavedBlock {
 
@@ -16,10 +17,10 @@ public class SavedBlock {
 	public SavedBlock(Location baseLocation, Block block) {
 		this.type = block.getType();
 		this.data = block.getData();
-		Location location = block.getLocation();
-		this.relativeX = location.subtract(baseLocation).getBlockX();
-		this.relativeY = location.subtract(baseLocation).getBlockY();
-		this.relativeZ = location.subtract(baseLocation).getBlockZ();
+		Location relativeLocation = block.getLocation().subtract(baseLocation);
+		this.relativeX = relativeLocation.getBlockX();
+		this.relativeY = relativeLocation.getBlockY();
+		this.relativeZ = relativeLocation.getBlockZ();
 	}
 	
 	public Material getType() {
@@ -40,6 +41,17 @@ public class SavedBlock {
 	
 	public int getRelativeZ() {
 		return this.relativeZ;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("type", this.type);
+		json.put("data", this.data);
+		json.put("relative-x", this.relativeX);
+		json.put("relative-y", this.relativeY);
+		json.put("relative-z", this.relativeZ);
+		return json;
 	}
 	
 }
