@@ -19,7 +19,7 @@ public final class StructureAPI {
 	private StructureAPI() {}
 	
 	public static void writeToFile(String filename, Selection selection) throws IOException {
-		FileWriter writer = new FileWriter("structures/" + filename);
+		FileWriter writer = new FileWriter("structures/" + filename + ".json");
 		writer.write(selection.toJSON().toJSONString());
 		writer.close();
 	}
