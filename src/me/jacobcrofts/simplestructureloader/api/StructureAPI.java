@@ -25,4 +25,8 @@ public final class StructureAPI {
 		return (JSONArray) new JSONParser().parse(new FileReader(path));
 	}
 	
+	public static void placeStructure(Selection selection) {
+		// TODO
+	}
+	
 }

@@ -13,9 +13,10 @@ public class Selection {
 	
 	private Location left;
 	private Location right;
+	private List<Block> blocks;
 	
 	public Selection() {
-		
+		this.blocks = new ArrayList<Block>();
 	}
 	
 	public Location getLeftClickLocation() {
@@ -34,8 +35,8 @@ public class Selection {
 		this.right = location;
 	}
 	
-	public List<Block> getBlocks() {
-		List<Block> blockData = new ArrayList<Block>();
+	public void save() {
+		List<Block> blocks = new ArrayList<Block>();
 		
 		int xMin = Math.min(left.getBlockX(), right.getBlockX());
 		int xMax = Math.max(left.getBlockX(), right.getBlockX());
@@ -50,12 +51,16 @@ public class Selection {
 			for (int y = yMin; y <= yMax; y++) {
 				for (int z = zMin; z <= zMax; z++) {
 					Location l = new Location(world, x, y, z);
-					blockData.add(l.getBlock());
+					blocks.add(l.getBlock());
 				}
 			}
 		}
 		
-		return blockData;
+		this.blocks = blocks;
+	}
+	
+	public List<Block> getBlocks() {
+		return this.blocks;
 	}
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
@@ -75,6 +80,10 @@ public class Selection {
 		}
 		
 		return blockDataArray;
+	}
+	
+	public void saveFromJSON(JSONObject json) {
+		// TODO
 	}
 
 }
