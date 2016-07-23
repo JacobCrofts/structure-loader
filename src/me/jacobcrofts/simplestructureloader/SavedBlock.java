@@ -1,4 +1,4 @@
-package me.jacobcrofts.simplestructureloader.util;
+package me.jacobcrofts.simplestructureloader;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

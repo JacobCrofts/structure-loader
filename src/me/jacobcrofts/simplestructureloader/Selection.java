@@ -1,4 +1,4 @@
-package me.jacobcrofts.simplestructureloader.util;
+package me.jacobcrofts.simplestructureloader;
 
 import java.util.ArrayList;
 import java.util.Iterator;
