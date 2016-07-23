@@ -7,7 +7,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import me.jacobcrofts.simplestructureloader.managers.SelectionManager;
+
 public class StructureListener implements Listener {
+	
+	private final SelectionManager manager;
+	
+	public StructureListener(SelectionManager manager) {
+		this.manager = manager;
+	}
 	
 	@EventHandler(priority= EventPriority.HIGH)
 	public void onPlayerInteract(PlayerInteractEvent event) {
