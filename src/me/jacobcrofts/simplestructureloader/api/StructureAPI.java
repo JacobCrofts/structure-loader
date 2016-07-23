@@ -5,10 +5,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import me.jacobcrofts.simplestructureloader.util.SavedBlock;
 import me.jacobcrofts.simplestructureloader.util.Selection;
 
 public final class StructureAPI {
@@ -25,8 +28,13 @@ public final class StructureAPI {
 		return (JSONArray) new JSONParser().parse(new FileReader(path));
 	}
 	
-	public static void placeStructure(Selection selection) {
-		// TODO
+	@SuppressWarnings("deprecation")
+	public static void placeStructure(Selection selection, Location baseLocation) {
+		for (SavedBlock block : selection.getSavedBlocks()) {
+			Block realBlock = baseLocation.add(block.getRelativeX(), block.getRelativeY(), block.getRelativeZ()).getBlock();
+			realBlock.setType(block.getType());
+			realBlock.setData(block.getData());
+		}
 	}
 	
 }
