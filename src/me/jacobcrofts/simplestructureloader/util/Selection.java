@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -13,10 +12,10 @@ public class Selection {
 	
 	private Location left;
 	private Location right;
-	private List<Block> blocks;
+	private List<SavedBlock> savedBlocks;
 	
 	public Selection() {
-		this.blocks = new ArrayList<Block>();
+		this.savedBlocks = new ArrayList<SavedBlock>();
 	}
 	
 	public Location getLeftClickLocation() {
@@ -36,7 +35,7 @@ public class Selection {
 	}
 	
 	public void save() {
-		List<Block> blocks = new ArrayList<Block>();
+		List<SavedBlock> blocks = new ArrayList<SavedBlock>();
 		
 		int xMin = Math.min(left.getBlockX(), right.getBlockX());
 		int xMax = Math.max(left.getBlockX(), right.getBlockX());
@@ -51,29 +50,29 @@ public class Selection {
 			for (int y = yMin; y <= yMax; y++) {
 				for (int z = zMin; z <= zMax; z++) {
 					Location l = new Location(world, x, y, z);
-					blocks.add(l.getBlock());
+					blocks.add(new SavedBlock(l.getBlock()));
 				}
 			}
 		}
 		
-		this.blocks = blocks;
+		this.savedBlocks = blocks;
 	}
 	
-	public List<Block> getBlocks() {
-		return this.blocks;
+	public List<SavedBlock> getSavedBlocks() {
+		return this.savedBlocks;
 	}
 	
-	@SuppressWarnings({ "deprecation", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public JSONArray toJSON() {
 		JSONArray blockDataArray = new JSONArray();
 		
-		List<Block> blocks = this.getBlocks();
+		List<SavedBlock> blocks = this.getSavedBlocks();
 		
-		for (Block block : blocks) {
+		for (SavedBlock block : blocks) {
 			JSONObject blockJSON = new JSONObject();
-			blockJSON.put("x", block.getLocation().getBlockX());
-			blockJSON.put("y", block.getLocation().getBlockY());
-			blockJSON.put("z", block.getLocation().getBlockZ());
+			blockJSON.put("x", block.getRelativeX());
+			blockJSON.put("y", block.getRelativeY());
+			blockJSON.put("z", block.getRelativeZ());
 			blockJSON.put("type", block.getType().toString());
 			blockJSON.put("data", block.getData());
 			blockDataArray.add(blockJSON);
