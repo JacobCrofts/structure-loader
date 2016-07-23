@@ -27,6 +27,10 @@ public class CmdSave implements CommandExecutor {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
 			
+			if (args.length != 1) {
+				return false;
+			}
+			
 			if (player.getGameMode() != GameMode.CREATIVE) {
 				player.sendMessage(ChatColor.RED + "You must be in creative mode to execute this command.");
 				return true;
