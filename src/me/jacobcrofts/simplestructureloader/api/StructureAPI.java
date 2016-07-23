@@ -1,11 +1,13 @@
 package me.jacobcrofts.simplestructureloader.api;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import me.jacobcrofts.simplestructureloader.util.Selection;
 
@@ -19,6 +21,8 @@ public final class StructureAPI {
 		writer.close();
 	}
 	
-//	playerData = (JSONObject) new JSONParser().parse(new FileReader(f));
-
+	public static JSONArray readFromFile(String path) throws FileNotFoundException, IOException, ParseException {
+		return (JSONArray) new JSONParser().parse(new FileReader(path));
+	}
+	
 }
