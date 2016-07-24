@@ -1,17 +1,13 @@
 package me.jacobcrofts.simplestructureloader.commands;
 
-import java.io.IOException;
-
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.json.simple.parser.ParseException;
 
-import me.jacobcrofts.simplestructureloader.api.StructureAPI;
-import me.jacobcrofts.simplestructureloader.util.Selection;
+import me.jacobcrofts.simplestructureloader.SimpleStructureLoader;
 
 public class CmdPasteStructure implements CommandExecutor {
 
@@ -35,18 +31,12 @@ public class CmdPasteStructure implements CommandExecutor {
 			return true;
 		}
 		
-		if (!(player.getGameMode() != GameMode.CREATIVE)) {
+		if (player.getGameMode() != GameMode.CREATIVE) {
 			player.sendMessage(ChatColor.RED + "You must be in creative mode to execute this command.");
 			return true;
 		}
 		
-		try {
-			Selection selection = new Selection(StructureAPI.readFromFile("plugins/structures/" + args[0] + ".json"));
-			StructureAPI.placeStructure(selection, player.getLocation());
-		} catch (IOException | ParseException e) {
-			player.sendMessage(ChatColor.RED + "Internal exception.");
-			e.printStackTrace();
-		}
+		SimpleStructureLoader.API.placeStructure(args[0], player.getLocation());
 
 		return true;
 		

@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.jacobcrofts.simplestructureloader.SimpleStructureLoader;
-import me.jacobcrofts.simplestructureloader.api.StructureAPI;
 import me.jacobcrofts.simplestructureloader.util.Selection;
 
 public class CmdSaveStructure implements CommandExecutor {
@@ -30,7 +29,7 @@ public class CmdSaveStructure implements CommandExecutor {
 			return true;
 		}
 		
-		if (!(player.getGameMode() != GameMode.CREATIVE)) {
+		if (player.getGameMode() != GameMode.CREATIVE) {
 			player.sendMessage(ChatColor.RED + "You must be in creative mode to execute this command.");
 			return true;
 		}
@@ -44,7 +43,7 @@ public class CmdSaveStructure implements CommandExecutor {
 		selection.saveCurrentSelection();
 		
 		try {
-			StructureAPI.writeToFile(args[0], selection);
+			SimpleStructureLoader.API.writeToFile(args[0], selection);
 		} catch (IOException e) {
 			e.printStackTrace();
 			player.sendMessage(ChatColor.RED + "Something went wrong whe we tried to write your structure to a file.");
