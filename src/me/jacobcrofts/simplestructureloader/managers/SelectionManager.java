@@ -1,9 +1,11 @@
-package me.jacobcrofts.simplestructureloader;
+package me.jacobcrofts.simplestructureloader.managers;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
+
+import me.jacobcrofts.simplestructureloader.util.Selection;
 
 public class SelectionManager {
 	

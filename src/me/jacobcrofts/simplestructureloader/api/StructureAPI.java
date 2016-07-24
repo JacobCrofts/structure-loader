@@ -1,4 +1,4 @@
-package me.jacobcrofts.simplestructureloader;
+package me.jacobcrofts.simplestructureloader.api;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,6 +11,9 @@ import org.bukkit.block.Block;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import me.jacobcrofts.simplestructureloader.util.SavedBlock;
+import me.jacobcrofts.simplestructureloader.util.Selection;
 
 public final class StructureAPI {
 	
