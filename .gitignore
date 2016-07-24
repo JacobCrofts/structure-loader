@@ -3,3 +3,5 @@
 .settings
 bin/
 todo.txt
+builder.xml
+.externalToolBuilders/
