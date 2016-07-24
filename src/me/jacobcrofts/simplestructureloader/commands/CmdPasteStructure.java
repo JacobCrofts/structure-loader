@@ -18,25 +18,38 @@ public class CmdPasteStructure implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		
-		if (sender instanceof Player) {
-			Player player = (Player) sender;
-			if (player.getGameMode() == GameMode.CREATIVE && player.isOp()) {				
-				Selection selection;
-				try {
-					selection = new Selection(StructureAPI.readFromFile("plugins/structures/" + args[0] + ".json"));
-					StructureAPI.placeStructure(selection, player.getLocation());
-				} catch (IOException | ParseException e) {
-					e.printStackTrace();
-				}
-			} else {
-				player.sendMessage(ChatColor.RED + "You do not have permission to execute this command.");
-			}
-			return true;
-		} else {
+		if (!(sender instanceof Player)) {
 			sender.sendMessage("Only players may perform this command.");
+			return true;
 		}
 		
-		return false;
+		Player player = (Player) sender;
+		
+		if (args.length != 1) {
+			player.sendMessage(ChatColor.RED + "Wrong number of arguments.");
+			return false;
+		}
+		
+		if (!(player.isOp())) {
+			player.sendMessage(ChatColor.RED + "You do not have permission to perform this command.");
+			return true;
+		}
+		
+		if (!(player.getGameMode() != GameMode.CREATIVE)) {
+			player.sendMessage(ChatColor.RED + "You must be in creative mode to execute this command.");
+			return true;
+		}
+		
+		try {
+			Selection selection = new Selection(StructureAPI.readFromFile("plugins/structures/" + args[0] + ".json"));
+			StructureAPI.placeStructure(selection, player.getLocation());
+		} catch (IOException | ParseException e) {
+			player.sendMessage(ChatColor.RED + "Internal exception.");
+			e.printStackTrace();
+		}
+
+		return true;
+		
 	}
 
 }
