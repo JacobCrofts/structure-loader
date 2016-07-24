@@ -25,10 +25,10 @@ public class SavedBlock {
 	
 	public SavedBlock(JSONObject savedBlockData) {
 		this.type = Material.getMaterial((String) savedBlockData.get("type"));
-		this.data = (byte) savedBlockData.get("data");
-		this.relativeX = (int) savedBlockData.get("relative-x");
-		this.relativeY = (int) savedBlockData.get("relative-y");
-		this.relativeZ = (int) savedBlockData.get("relative-z");
+		this.data = ((Long) savedBlockData.get("data")).byteValue();
+		this.relativeX = ((Long) savedBlockData.get("relative-x")).intValue();
+		this.relativeY = ((Long) savedBlockData.get("relative-y")).intValue();
+		this.relativeZ = ((Long) savedBlockData.get("relative-z")).intValue();
 	}
 	
 	public Material getType() {
