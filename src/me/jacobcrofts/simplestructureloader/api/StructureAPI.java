@@ -38,6 +38,7 @@ public final class StructureAPI {
 	
 	@SuppressWarnings("deprecation")
 	public static void placeStructure(Selection selection, Location baseLocation) {
+		System.out.println("placing structure at " + baseLocation);
 		for (SavedBlock savedBlock : selection.getSavedBlocks()) {
 			Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
 			realBlock.setType(savedBlock.getType());

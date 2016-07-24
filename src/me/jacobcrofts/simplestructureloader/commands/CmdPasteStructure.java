@@ -11,7 +11,7 @@ import org.json.simple.parser.ParseException;
 import me.jacobcrofts.simplestructureloader.api.StructureAPI;
 import me.jacobcrofts.simplestructureloader.util.Selection;
 
-public class CmdTest implements CommandExecutor {
+public class CmdPasteStructure implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
