@@ -2,10 +2,9 @@ name: SimpleStructureLoader
 main: me.jacobcrofts.simplestructureloader.SimpleStructureLoader
 version: 1.0
 commands:
-  test:
-    description: Test command
-    usage: /test
-    aliases: [t]
+  paste:
+    description: Paste a structure at your current location
+    usage: /paste <filename>
   save:
     description: Save a structure
     usage: /save <filename>

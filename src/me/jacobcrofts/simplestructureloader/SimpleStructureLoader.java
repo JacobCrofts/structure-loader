@@ -27,6 +27,7 @@ public class SimpleStructureLoader extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new SelectionListener(), this);
 		
 		this.getCommand("save").setExecutor(new CmdSaveStructure());
+		this.getCommand("paste").setExecutor(new CmdPasteStructure());
 		this.selectionManager = new SelectionManager();
 	}
 	
