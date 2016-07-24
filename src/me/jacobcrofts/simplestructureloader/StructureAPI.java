@@ -35,10 +35,10 @@ public final class StructureAPI {
 	
 	@SuppressWarnings("deprecation")
 	public static void placeStructure(Selection selection, Location baseLocation) {
-		for (SavedBlock block : selection.getSavedBlocks()) {
-			Block realBlock = baseLocation.add(block.getRelativeX(), block.getRelativeY(), block.getRelativeZ()).getBlock();
-			realBlock.setType(block.getType());
-			realBlock.setData(block.getData());
+		for (SavedBlock savedBlock : selection.getSavedBlocks()) {
+			Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
+			realBlock.setType(savedBlock.getType());
+			realBlock.setData(savedBlock.getData());
 		}
 	}
 	
