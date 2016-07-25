@@ -120,56 +120,70 @@ public final class SimpleStructureLoader extends JavaPlugin {
 		// The base block with the specified data will always place. Once it places, only blocks directly above
 		//     that block type will be changed when you paste. I recommend using blocks that don't generate naturally as base blocks.
 		// In the future, I will offer an argument that replaces the "base block" with something else after the operation is finished.
-		@SuppressWarnings("deprecation")
-		public static void placeStructure(String fileName, Location baseLocation, Material baseType, byte baseData) {
-			Selection selection;
-			try {
-				selection = new Selection(readFromFile("plugins/structures/" + fileName + ".json"));
-				List<SavedBlock> doLater = new ArrayList<SavedBlock>();
-				
-				for (SavedBlock savedBlock : selection.getSavedBlocks()) {
-					Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
-					if (savedBlock.matches(baseType, baseData) || API.isAboveBaseBlock(realBlock, baseType, baseData)) {						
-						if (savedBlock.isAttachable()) {
-							doLater.add(0, savedBlock);
-						} else {
-							realBlock.setType(savedBlock.getType());
-							realBlock.setData(savedBlock.getData());
-						}
-					}
-				}
-				
-				for (SavedBlock savedBlock : doLater) {
-					Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
-					if (savedBlock.matches(baseType, baseData) || API.isAboveBaseBlock(realBlock, baseType, baseData)) {						
-						Block below = realBlock.getRelative(BlockFace.DOWN);
-						
-						Material belowType = below.getType();
-						byte belowData = below.getData();
-						
-						if (!below.getType().isSolid()) {
-							below.setType(Material.STONE);
-						}
-						
-						realBlock.setType(savedBlock.getType());
-						realBlock.setData(savedBlock.getData());
-						
-						below.setType(belowType);
-						below.setData(belowData);
-					}
-				}
-				
-			} catch (IOException | ParseException e) {
-				e.printStackTrace();
-			}
-			
-		}
+//		@SuppressWarnings("deprecation")
+//		public static void placeStructure(String fileName, Location baseLocation, Material baseType, byte baseData) {
+//			Selection selection;
+//			try {
+//				selection = new Selection(readFromFile("plugins/structures/" + fileName + ".json"));
+//				List<SavedBlock> doLater = new ArrayList<SavedBlock>();
+//				
+//				for (SavedBlock savedBlock : selection.getSavedBlocks()) {
+//					Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
+//					if (savedBlock.matches(baseType, baseData) || API.isAboveBaseBlock(realBlock, baseType, baseData)) {						
+//						if (savedBlock.isAttachable()) {
+//							doLater.add(0, savedBlock);
+//						} else {
+//							realBlock.setType(savedBlock.getType());
+//							realBlock.setData(savedBlock.getData());
+//						}
+//					}
+//				}
+//				
+//				for (SavedBlock savedBlock : doLater) {
+//					Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
+//					if (savedBlock.matches(baseType, baseData) || API.isAboveBaseBlock(realBlock, baseType, baseData)) {						
+//						Block below = realBlock.getRelative(BlockFace.DOWN);
+//						
+//						Material belowType = below.getType();
+//						byte belowData = below.getData();
+//						
+//						if (!below.getType().isSolid()) {
+//							below.setType(Material.STONE);
+//						}
+//						
+//						realBlock.setType(savedBlock.getType());
+//						realBlock.setData(savedBlock.getData());
+//						
+//						below.setType(belowType);
+//						below.setData(belowData);
+//					}
+//				}
+//				
+//			} catch (IOException | ParseException e) {
+//				e.printStackTrace();
+//			}
+//			
+//		}
+		
+//		@SuppressWarnings("deprecation")
+//		public static boolean isAboveBaseBlock(Block block, Material baseType, byte baseData) {
+//			Location bedrock = block.getLocation();
+//			bedrock.setY(0);
+//			while (bedrock.getY() < block.getLocation().getBlockY()) {
+//				Block currentBlock = bedrock.getBlock();
+//				if (currentBlock.getType() == baseType && currentBlock.getData() == baseData) {
+//					return true;
+//				}
+//				bedrock.add(0, 1, 0);
+//			}
+//			return false;
+//		}
 		
 		@SuppressWarnings("deprecation")
-		private static boolean isAboveBaseBlock(Block block, Material baseType, byte baseData) {
+		public static boolean isPartOfShape(Block block, Material baseType, byte baseData) {
 			Location bedrock = block.getLocation();
 			bedrock.setY(0);
-			while (bedrock.getY() < block.getLocation().getBlockY()) {
+			while (bedrock.getY() <= block.getLocation().getBlockY()) {
 				Block currentBlock = bedrock.getBlock();
 				if (currentBlock.getType() == baseType && currentBlock.getData() == baseData) {
 					return true;
