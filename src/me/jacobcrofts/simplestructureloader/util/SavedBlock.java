@@ -3,6 +3,7 @@ package me.jacobcrofts.simplestructureloader.util;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.material.Attachable;
 import org.json.simple.JSONObject;
 
 public class SavedBlock {
@@ -12,6 +13,7 @@ public class SavedBlock {
 	private final int relativeX;
 	private final int relativeY;
 	private final int relativeZ;
+	private final boolean isAttachable;
 	
 	@SuppressWarnings("deprecation")
 	public SavedBlock(Location baseLocation, Block block) {
@@ -21,6 +23,7 @@ public class SavedBlock {
 		this.relativeX = relativeLocation.getBlockX();
 		this.relativeY = relativeLocation.getBlockY();
 		this.relativeZ = relativeLocation.getBlockZ();
+		this.isAttachable = block.getState().getData() instanceof Attachable;
 	}
 	
 	public SavedBlock(JSONObject savedBlockData) {
@@ -29,6 +32,7 @@ public class SavedBlock {
 		this.relativeX = ((Long) savedBlockData.get("relative-x")).intValue();
 		this.relativeY = ((Long) savedBlockData.get("relative-y")).intValue();
 		this.relativeZ = ((Long) savedBlockData.get("relative-z")).intValue();
+		this.isAttachable = (boolean) savedBlockData.get("is-attachable");
 	}
 	
 	public Material getType() {
@@ -51,6 +55,10 @@ public class SavedBlock {
 		return this.relativeZ;
 	}
 	
+	public boolean isAttachable() {
+		return this.isAttachable;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON() {
 		JSONObject savedBlockData = new JSONObject();
@@ -59,6 +67,7 @@ public class SavedBlock {
 		savedBlockData.put("relative-x", this.relativeX);
 		savedBlockData.put("relative-y", this.relativeY);
 		savedBlockData.put("relative-z", this.relativeZ);
+		savedBlockData.put("is-attachable", this.isAttachable);
 		return savedBlockData;
 	}
 	
