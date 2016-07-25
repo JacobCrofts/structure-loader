@@ -26,7 +26,7 @@ For example, if you use magenta stained glass as your base block:
 /save-special my_special_structure STAINED_GLASS 2 false
 ```
 
-"ignoreBaseBlocks?" determines whether the base blocks should persist when your structure saves. It should generally be false. Use the /paste <fileName> command to test whether your structure was saved as you expected.
+"ignoreBaseBlocks?" determines whether the base blocks should persist when your structure saves. It should generally be true. Use the /paste command to test whether your structure was saved as you expected.
 
 # Loading a Structure
 
