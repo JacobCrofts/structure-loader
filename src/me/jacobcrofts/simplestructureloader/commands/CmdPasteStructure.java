@@ -2,6 +2,7 @@ package me.jacobcrofts.simplestructureloader.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,7 +37,7 @@ public class CmdPasteStructure implements CommandExecutor {
 			return true;
 		}
 		
-		SimpleStructureLoader.API.placeStructure(args[0], player.getLocation());
+		SimpleStructureLoader.API.placeStructure(args[0], player.getLocation(), Material.SMOOTH_BRICK, (byte) 3);
 
 		return true;
 		
