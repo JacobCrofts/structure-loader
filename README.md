@@ -10,6 +10,24 @@ This process works much like WorldEdit. Use a **golden axe** to select blocks at
 
 This will create the file plugins/structures/my_structure.json.
 
+You can save structures as any shape you want. Choose a "base block" which has two components: a Material (Spigot's Material class) and a byte (for block data). Your base block should usually be something that doesn't generate naturally, like stained glass, and that otherwise isn't a part of your structure. All blocks inside your cuboid selection that match these two components will be considered "base blocks" -- that is, blocks that dictate the shape of the structure you intend to save.
+
+If you use a base block, then the only blocks in your selection that will be saved are those which either (a) are base blocks themselves; or (b) occur somewhere above base blocks in your world.
+
+Save your structure with a different command:
+
+```code
+/save-special fileName baseBlockMaterial baseBlockData ignoreBaseBlocks?
+```
+
+For example, if you use magenta stained glass as your base block:
+
+```code
+/save-special my_special_structure STAINED_GLASS 2 false
+```
+
+"ignoreBaseBlocks?" determines whether the base blocks should persist when your structure saves. It should generally be false. Use the /paste <fileName> command to test whether your structure was saved as you expected.
+
 # Loading a Structure
 
 Once the file is saved, you may load it from another plugin without adding dependencies of any kind (as long as your server is running SimpleStructureLoader). Use reflection, like so:
@@ -35,7 +53,7 @@ This plugin does not currently support entities, chest contents, block metadata,
 
 Players must be OP and in creative mode for this plugin to work. Do not allow untrusted players to use this, as they can permanently overwrite the structures you have saved.
 
-Loading large structures could cause server lag. Make sure your larger structure is able to load before you consider your plugin production-ready!
+My loading and pasting mechanism is not as fast as WorldEdit's. Loading large structures can take a few seconds. In future updates, I will include a method to load and parse the JSON files in the structures folder ahead of time, which should speed things up.
 
 # License
 
