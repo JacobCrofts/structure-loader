@@ -59,10 +59,6 @@ public class SavedBlock {
 		return this.isAttachable;
 	}
 	
-	public boolean matches(Material type, byte data) {
-		return this.type == type && this.data == data;
-	}
-	
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON() {
 		JSONObject savedBlockData = new JSONObject();
