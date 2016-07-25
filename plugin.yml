@@ -6,5 +6,8 @@ commands:
     description: Paste a structure at your current location
     usage: /paste <filename>
   save:
-    description: Save a structure
+    description: Save a cuboid structure
     usage: /save <filename>
+  save-special:
+    description: Save a non-cuboid structure
+    usage: /save-special <filename> <baseBlockMaterial> <baseBlockData> <ignoreBaseBlocks?>
