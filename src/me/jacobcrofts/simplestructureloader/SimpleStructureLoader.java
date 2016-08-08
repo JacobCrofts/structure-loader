@@ -82,9 +82,13 @@ public final class SimpleStructureLoader extends JavaPlugin {
 			try {
 				selection = new Selection(readFromFile("plugins/structures/" + fileName + ".json"));
 				List<SavedBlock> doLater = new ArrayList<SavedBlock>();
+				List<Block> portals = new ArrayList<Block>();
 				
 				for (SavedBlock savedBlock : selection.getSavedBlocks()) {
-					if (savedBlock.isAttachable()) {
+					if (savedBlock.getType() == Material.PORTAL) {
+						Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
+						portals.add(realBlock);
+					} else if (savedBlock.isAttachable()) {
 						doLater.add(0, savedBlock);
 					} else {
 						Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
@@ -109,6 +113,12 @@ public final class SimpleStructureLoader extends JavaPlugin {
 					
 					below.setType(belowType);
 					below.setData(belowData);
+				}
+				
+				for (Block portal : portals) {
+					if (portal.getType() != Material.PORTAL) {
+						portal.setType(Material.FIRE);
+					}
 				}
 				
 			} catch (IOException | ParseException e) {
