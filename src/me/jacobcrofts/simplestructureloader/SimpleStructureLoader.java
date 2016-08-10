@@ -77,21 +77,22 @@ public final class SimpleStructureLoader extends JavaPlugin {
 		}
 		
 		@SuppressWarnings("deprecation")
-		public static void placeStructure(String fileName, Location baseLocation) {
+		public static List<Block> placeStructure(String fileName, Location baseLocation) {
 			Selection selection;
+			List<Block> allBlocks = new ArrayList<Block>();
+			List<SavedBlock> doLater = new ArrayList<SavedBlock>();
+			List<Block> portals = new ArrayList<Block>();
 			try {
 				selection = new Selection(readFromFile("plugins/structures/" + fileName + ".json"));
-				List<SavedBlock> doLater = new ArrayList<SavedBlock>();
-				List<Block> portals = new ArrayList<Block>();
 				
 				for (SavedBlock savedBlock : selection.getSavedBlocks()) {
+					Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
+					allBlocks.add(realBlock);
 					if (savedBlock.getType() == Material.PORTAL) {
-						Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
 						portals.add(realBlock);
 					} else if (savedBlock.isAttachable()) {
 						doLater.add(0, savedBlock);
 					} else {
-						Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
 						realBlock.setType(savedBlock.getType());
 						realBlock.setData(savedBlock.getData());
 					}
@@ -124,6 +125,8 @@ public final class SimpleStructureLoader extends JavaPlugin {
 			} catch (IOException | ParseException e) {
 				e.printStackTrace();
 			}
+			
+			return allBlocks;
 			
 		}
 				
