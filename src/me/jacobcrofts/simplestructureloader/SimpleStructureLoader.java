@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -72,8 +73,8 @@ public final class SimpleStructureLoader extends JavaPlugin {
 			
 		}
 		
-		public static JSONArray readFromFile(String path) throws FileNotFoundException, IOException, ParseException {
-			return (JSONArray) new JSONParser().parse(new FileReader(path));
+		public static JSONObject readFromFile(String path) throws FileNotFoundException, IOException, ParseException {
+			return (JSONObject) new JSONParser().parse(new FileReader(path));
 		}
 		
 		@SuppressWarnings("deprecation")
@@ -83,7 +84,7 @@ public final class SimpleStructureLoader extends JavaPlugin {
 			List<SavedBlock> doLater = new ArrayList<SavedBlock>();
 			List<Block> portals = new ArrayList<Block>();
 			try {
-				selection = new Selection(readFromFile("plugins/structures/" + fileName + ".json"));
+				selection = new Selection(baseLocation.getWorld(), readFromFile("plugins/structures/" + fileName + ".json"));
 				
 				for (SavedBlock savedBlock : selection.getSavedBlocks()) {
 					Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();

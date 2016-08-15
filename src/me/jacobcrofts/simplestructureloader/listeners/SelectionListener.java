@@ -23,9 +23,10 @@ public class SelectionListener implements Listener {
 				
 		if (player.getGameMode() == GameMode.CREATIVE && player.isOp()) {
 			
-			if (player.getInventory().getItemInMainHand().getType() == Material.GOLD_AXE) {
-				
-				SelectionManager manager = SimpleStructureLoader.thisInstance().getSelectionManager();
+			Material heldMaterial = player.getInventory().getItemInMainHand().getType();
+			SelectionManager manager = SimpleStructureLoader.thisInstance().getSelectionManager();
+			
+			if (heldMaterial == Material.GOLD_AXE) {
 				
 				if (action == Action.RIGHT_CLICK_BLOCK) {
 					if (event.getHand() == EquipmentSlot.HAND) {						
@@ -40,6 +41,14 @@ public class SelectionListener implements Listener {
 					manager.getSelection(player).setLeftClickLocation(location);
 					player.sendMessage(ChatColor.DARK_PURPLE + "Left-click selection: [" + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ() + "]");
 					event.setCancelled(true);
+				}
+				
+			} else if (heldMaterial == Material.GOLD_SPADE) {
+				
+				if (action == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND || action == Action.LEFT_CLICK_BLOCK) {
+					Location location = event.getClickedBlock().getLocation();
+					manager.getSelection(player).setCenter(location);
+					player.sendMessage(ChatColor.DARK_PURPLE + "Selection centered at: [" + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ() + "]");
 				}
 				
 			}
