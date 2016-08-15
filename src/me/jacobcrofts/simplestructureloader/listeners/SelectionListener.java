@@ -49,6 +49,7 @@ public class SelectionListener implements Listener {
 					Location location = event.getClickedBlock().getLocation();
 					manager.getSelection(player).setCenter(location);
 					player.sendMessage(ChatColor.DARK_PURPLE + "Selection centered at: [" + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ() + "]");
+					event.setCancelled(true);
 				}
 				
 			}

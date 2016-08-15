@@ -13,7 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -52,7 +51,6 @@ public final class SimpleStructureLoader extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		
 		thisInstance = null;
 	}
 	
