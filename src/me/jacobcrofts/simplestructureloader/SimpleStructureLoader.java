@@ -13,7 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -51,7 +51,6 @@ public final class SimpleStructureLoader extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		
 		thisInstance = null;
 	}
 	
@@ -72,26 +71,27 @@ public final class SimpleStructureLoader extends JavaPlugin {
 			
 		}
 		
-		public static JSONArray readFromFile(String path) throws FileNotFoundException, IOException, ParseException {
-			return (JSONArray) new JSONParser().parse(new FileReader(path));
+		public static JSONObject readFromFile(String path) throws FileNotFoundException, IOException, ParseException {
+			return (JSONObject) new JSONParser().parse(new FileReader(path));
 		}
 		
 		@SuppressWarnings("deprecation")
-		public static void placeStructure(String fileName, Location baseLocation) {
+		public static List<Block> placeStructure(String fileName, Location baseLocation) {
 			Selection selection;
+			List<Block> allBlocks = new ArrayList<Block>();
+			List<SavedBlock> doLater = new ArrayList<SavedBlock>();
+			List<Block> portals = new ArrayList<Block>();
 			try {
-				selection = new Selection(readFromFile("plugins/structures/" + fileName + ".json"));
-				List<SavedBlock> doLater = new ArrayList<SavedBlock>();
-				List<Block> portals = new ArrayList<Block>();
+				selection = new Selection(baseLocation.getWorld(), readFromFile("plugins/structures/" + fileName + ".json"));
 				
 				for (SavedBlock savedBlock : selection.getSavedBlocks()) {
+					Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
+					allBlocks.add(realBlock);
 					if (savedBlock.getType() == Material.PORTAL) {
-						Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
 						portals.add(realBlock);
 					} else if (savedBlock.isAttachable()) {
 						doLater.add(0, savedBlock);
 					} else {
-						Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
 						realBlock.setType(savedBlock.getType());
 						realBlock.setData(savedBlock.getData());
 					}
@@ -124,6 +124,8 @@ public final class SimpleStructureLoader extends JavaPlugin {
 			} catch (IOException | ParseException e) {
 				e.printStackTrace();
 			}
+			
+			return allBlocks;
 			
 		}
 				

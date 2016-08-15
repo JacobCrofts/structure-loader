@@ -18,18 +18,21 @@ public class Selection {
 	private Location leftClickLocation;
 	private Location rightClickLocation;
 	private List<SavedBlock> savedBlocks;
+	private Location center;
 	
 	public Selection() {
 		this.savedBlocks = new ArrayList<SavedBlock>();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Selection(JSONArray savedBlockData) {
+	public Selection(World world, JSONObject object) {
 		this();
-		Iterator<JSONObject> iterator = savedBlockData.iterator();
+		JSONArray blocks = (JSONArray) object.get("blocks");
+		Iterator<JSONObject> iterator = blocks.iterator();
 		while (iterator.hasNext()) {
 			this.savedBlocks.add(new SavedBlock(iterator.next()));
 		}
+		this.center = new Location(world, (long) object.get("center-x"), (long) object.get("center-y"), (long) object.get("center-z"));
 	}
 	
 	public Location getLeftClickLocation() {
@@ -48,6 +51,14 @@ public class Selection {
 		this.rightClickLocation = location;
 	}
 	
+	public Location getCenter() {
+		return this.center;
+	}
+	
+	public void setCenter(Location newCenter) {
+		this.center = newCenter;
+	}
+	
 	public void saveCurrentSelection() {
 		List<SavedBlock> blocks = new ArrayList<SavedBlock>();
 		
@@ -61,13 +72,13 @@ public class Selection {
 			int zMax = Math.max(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
 			
 			World world = leftClickLocation.getWorld();
-			Location baseBlock = new Location(world, xMin, yMin, zMin);
+//			Location baseBlock = new Location(world, xMin, yMin, zMin);
 			
 			for (int x = xMin; x <= xMax; x++) {
 				for (int y = yMin; y <= yMax; y++) {
 					for (int z = zMin; z <= zMax; z++) {
 						Location l = new Location(world, x, y, z);
-						blocks.add(new SavedBlock(baseBlock, l.getBlock()));
+						blocks.add(new SavedBlock(center, l.getBlock()));
 					}
 				}
 			}
@@ -93,7 +104,7 @@ public class Selection {
 			int zMax = Math.max(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
 			
 			World world = leftClickLocation.getWorld();
-			Location baseBlock = new Location(world, xMin, yMin, zMin);
+//			Location baseBlock = new Location(world, xMin, yMin, zMin);
 			
 			for (int x = xMin; x <= xMax; x++) {
 				for (int y = yMin; y <= yMax; y++) {
@@ -101,7 +112,7 @@ public class Selection {
 						Location l = new Location(world, x, y, z);
 						Block b = l.getBlock();
 						if (SimpleStructureLoader.API.isPartOfShape(b, baseType, baseData)) {
-							blocks.add(new SavedBlock(baseBlock, b));
+							blocks.add(new SavedBlock(center, b));
 						}
 					}
 				}
@@ -127,14 +138,20 @@ public class Selection {
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	public JSONArray toJSON() {
+	public JSONObject toJSON() {
+		JSONObject object = new JSONObject();
 		JSONArray blockDataArray = new JSONArray();
 		
 		for (SavedBlock block : this.savedBlocks) {
 			blockDataArray.add(block.toJSON());
 		}
 		
-		return blockDataArray;
+		object.put("blocks", blockDataArray);
+		object.put("center-x", this.center.getBlockX());
+		object.put("center-y", this.center.getBlockY());
+		object.put("center-z", this.center.getBlockZ());
+		
+		return object;
 	}
 
 }
