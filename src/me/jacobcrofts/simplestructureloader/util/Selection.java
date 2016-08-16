@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -72,13 +73,14 @@ public class Selection {
 			int zMax = Math.max(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
 			
 			World world = leftClickLocation.getWorld();
-//			Location baseBlock = new Location(world, xMin, yMin, zMin);
 			
 			for (int x = xMin; x <= xMax; x++) {
 				for (int y = yMin; y <= yMax; y++) {
 					for (int z = zMin; z <= zMax; z++) {
-						Location l = new Location(world, x, y, z);
-						blocks.add(new SavedBlock(center, l.getBlock()));
+						Block b = new Location(world, x, y, z).getBlock();
+						if (!isDoor(b.getRelative(BlockFace.DOWN))) {
+							blocks.add(new SavedBlock(center, b));
+						}
 					}
 				}
 			}
@@ -104,15 +106,15 @@ public class Selection {
 			int zMax = Math.max(leftClickLocation.getBlockZ(), rightClickLocation.getBlockZ());
 			
 			World world = leftClickLocation.getWorld();
-//			Location baseBlock = new Location(world, xMin, yMin, zMin);
 			
 			for (int x = xMin; x <= xMax; x++) {
 				for (int y = yMin; y <= yMax; y++) {
 					for (int z = zMin; z <= zMax; z++) {
-						Location l = new Location(world, x, y, z);
-						Block b = l.getBlock();
+						Block b = new Location(world, x, y, z).getBlock();
 						if (SimpleStructureLoader.API.isPartOfShape(b, baseType, baseData)) {
-							blocks.add(new SavedBlock(center, b));
+							if (!isDoor(b.getRelative(BlockFace.DOWN))) {
+								blocks.add(new SavedBlock(center, b));
+							}
 						}
 					}
 				}
@@ -152,6 +154,10 @@ public class Selection {
 		object.put("center-z", this.center.getBlockZ());
 		
 		return object;
+	}
+	
+	private boolean isDoor(Block block) {
+		return block.getType().toString().contains("DOOR") && block.getType() != Material.TRAP_DOOR;
 	}
 
 }

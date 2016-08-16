@@ -79,7 +79,8 @@ public final class SimpleStructureLoader extends JavaPlugin {
 		public static List<Block> placeStructure(String fileName, Location baseLocation) {
 			Selection selection;
 			List<Block> allBlocks = new ArrayList<Block>();
-			List<SavedBlock> doLater = new ArrayList<SavedBlock>();
+			List<SavedBlock> attachables = new ArrayList<SavedBlock>();
+			List<SavedBlock> doors = new ArrayList<SavedBlock>();
 			List<Block> portals = new ArrayList<Block>();
 			try {
 				selection = new Selection(baseLocation.getWorld(), readFromFile("plugins/structures/" + fileName + ".json"));
@@ -87,17 +88,29 @@ public final class SimpleStructureLoader extends JavaPlugin {
 				for (SavedBlock savedBlock : selection.getSavedBlocks()) {
 					Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
 					allBlocks.add(realBlock);
+					
 					if (savedBlock.getType() == Material.PORTAL) {
 						portals.add(realBlock);
 					} else if (savedBlock.isAttachable()) {
-						doLater.add(0, savedBlock);
+						attachables.add(0, savedBlock);
+					} else if (savedBlock.getType().toString().contains("DOOR")) {
+						doors.add(savedBlock);
 					} else {
 						realBlock.setType(savedBlock.getType());
 						realBlock.setData(savedBlock.getData());
 					}
 				}
-				
-				for (SavedBlock savedBlock : doLater) {
+								
+				for (SavedBlock door : doors) {
+					Block realBlock = baseLocation.clone().add(door.getRelativeX(), door.getRelativeY(), door.getRelativeZ()).getBlock();
+					realBlock.setType(door.getType());
+					realBlock.setData(door.getData());
+					Block above = realBlock.getRelative(BlockFace.UP);
+					above.setType(door.getType());
+					above.setData((byte)(door.getData() + 8));
+				}
+								
+				for (SavedBlock savedBlock : attachables) {
 					Block realBlock = baseLocation.clone().add(savedBlock.getRelativeX(), savedBlock.getRelativeY(), savedBlock.getRelativeZ()).getBlock();
 					Block below = realBlock.getRelative(BlockFace.DOWN);
 					
