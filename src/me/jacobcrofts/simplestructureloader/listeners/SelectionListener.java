@@ -4,15 +4,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.material.Door;
 
 import me.jacobcrofts.simplestructureloader.SimpleStructureLoader;
 import me.jacobcrofts.simplestructureloader.managers.SelectionManager;
@@ -59,18 +56,7 @@ public class SelectionListener implements Listener {
 			
 			
 		}
-//		if (heldMaterial == Material.AIR) {
-//			Block clicked = event.getClickedBlock();
-//			Block above = clicked.getRelative(BlockFace.UP);
-//			event.setCancelled(true);
-//			clicked.setType(Material.DARK_OAK_DOOR);
-//			clicked.setData((byte) 2);
-//			above.setType(Material.DARK_OAK_DOOR);
-//			above.setData((byte) 8);
-//			System.out.println(event.getClickedBlock().getData());
-//				event.getClickedBlock().setType(Material.ACACIA_DOOR);
-//				event.getClickedBlock().getRelative(BlockFace.UP).getState().setData(event.getClickedBlock().getState().getData());
-//		}
+
 	}
 
 }
